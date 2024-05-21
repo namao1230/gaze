@@ -1,6 +1,8 @@
 # 국립안동대학교 컴퓨턱공학과 20210817 신현진
 
 -----------------
+# Dev-CPP 사각형 큐브 대신 다른 도형 넣기
+
 
 https://github.com/namao1230/gaze/assets/153504478/e678a35e-b55b-4bc0-a056-5da4708e1359
 
@@ -142,6 +144,8 @@ https://github.com/namao1230/gaze/assets/153504478/e678a35e-b55b-4bc0-a056-5da47
         }
 
 ---------------
+# MFC에서 사각형, 타원, 글씨에 다른 3가지 추가하기 를 구현
+
 
 https://github.com/namao1230/gaze/assets/153504478/f9ea3d2b-d2c5-4b17-b3f6-3f8fdfbf6fe0
 
