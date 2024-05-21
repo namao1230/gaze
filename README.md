@@ -143,3 +143,129 @@ https://github.com/namao1230/gaze/assets/153504478/e678a35e-b55b-4bc0-a056-5da47
 
 
 ---------------
+
+                // MFCApplication6View.cpp 파일
+                
+                #include "pch.h"
+                #include "framework.h"
+                #include "MFCApplication6.h"
+                #include "MFCApplication6Doc.h"
+                #include "MFCApplication6View.h"
+                
+                #ifdef _DEBUG
+                #define new DEBUG_NEW
+                #endif
+                
+                IMPLEMENT_DYNCREATE(CMFCApplication6View, CView)
+                
+                BEGIN_MESSAGE_MAP(CMFCApplication6View, CView)
+                    ON_WM_MOUSEMOVE()
+                    ON_WM_LBUTTONDOWN() // 왼쪽 버튼을 누를 때 메시지 핸들러 추가
+                END_MESSAGE_MAP()
+                
+                CMFCApplication6View::CMFCApplication6View() noexcept
+                {
+                }
+                
+                CMFCApplication6View::~CMFCApplication6View()
+                {
+                }
+                
+                BOOL CMFCApplication6View::PreCreateWindow(CREATESTRUCT& cs)
+                {
+                    return CView::PreCreateWindow(cs);
+                }
+                
+                void CMFCApplication6View::OnDraw(CDC* pDC)
+                {
+                    CMFCApplication6Doc* pDoc = (CMFCApplication6Doc*)GetDocument();
+                    ASSERT_VALID(pDoc);
+                    if (!pDoc)
+                        return;
+                
+                    // 사각형 그리기
+                    CBrush redBrush(m_RectColor); // 사각형 색상을 현재 색상으로 설정
+                    CBrush* pOldBrush = pDC->SelectObject(&redBrush);
+                    pDC->Rectangle(m_MousePos.x - 150, m_MousePos.y - 150, m_MousePos.x + 150, m_MousePos.y + 150);
+                    pDC->SelectObject(pOldBrush);
+                
+                    // 타원 그리기
+                    CBrush blueBrush(m_EllipseColor); // 타원 색상을 현재 색상으로 설정
+                    pOldBrush = pDC->SelectObject(&blueBrush);
+                    pDC->Ellipse(m_MousePos.x - 100, m_MousePos.y - 100, m_MousePos.x + 100, m_MousePos.y + 100);
+                    pDC->SelectObject(pOldBrush);
+                
+                    // 텍스트 출력
+                    CString text = L"가야할때를 알고가는 이의 뒷모습은 얼마나 아름다운가";
+                    CRect rect;
+                    pDC->DrawTextW(text, rect, DT_CALCRECT | DT_CENTER | DT_SINGLELINE);
+                    int width = rect.Width();
+                    int height = rect.Height();
+                    pDC->TextOutW(m_MousePos.x - width / 2, m_MousePos.y - height / 2, text);
+                }
+                
+                #ifdef _DEBUG
+                void CMFCApplication6View::AssertValid() const
+                {
+                    CView::AssertValid();
+                }
+                
+                void CMFCApplication6View::Dump(CDumpContext& dc) const
+                {
+                    CView::Dump(dc);
+                }
+                #endif //_DEBUG
+                
+                void CMFCApplication6View::OnMouseMove(UINT nFlags, CPoint point)
+                {
+                    // 마우스 포인터의 위치 저장
+                    m_MousePos = point;
+                    // 화면 갱신 요청
+                    Invalidate();
+                    // 기본 핸들러 호출
+                    CView::OnMouseMove(nFlags, point);
+                }
+                
+                void CMFCApplication6View::OnLButtonDown(UINT nFlags, CPoint point)
+                {
+                    // 랜덤한 RGB 값을 생성하여 사각형과 타원의 색상으로 설정
+                    m_RectColor = RGB(rand() % 256, rand() % 256, rand() % 256);
+                    m_EllipseColor = RGB(rand() % 256, rand() % 256, rand() % 256);
+                    // 화면 갱신 요청
+                    Invalidate();
+                    // 기본 핸들러 호출
+                    CView::OnLButtonDown(nFlags, point);
+                }
+
+--------------
+
+                #pragma once
+                
+                class CMFCApplication6View : public CView
+                {
+                protected:
+                    CMFCApplication6View() noexcept;
+                    DECLARE_DYNCREATE(CMFCApplication6View)
+                
+                public:
+                    virtual ~CMFCApplication6View();
+                #ifdef _DEBUG
+                    virtual void AssertValid() const;
+                    virtual void Dump(CDumpContext& dc) const;
+                #endif
+                
+                protected:
+                    CPoint m_MousePos;
+                    COLORREF m_RectColor;
+                    COLORREF m_EllipseColor;
+                
+                public:
+                    virtual BOOL PreCreateWindow(CREATESTRUCT& cs) override;
+                
+                    afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+                    afx_msg void OnDraw(CDC* pDC);
+                    afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+                    DECLARE_MESSAGE_MAP()
+                };
+
+--------------
